@@ -1,59 +1,44 @@
-import styles from './index.module.css';
+import { useEffect, useState } from 'react';
 
-const Home = () => {
+const App = () => {
+  useEffect
+  const [board, setBoard] = useState([
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ]);
+
+  const generateRandomNumber = () => Math.floor(Math.random() * 423) + 1;
+
+  const generateRandomBoard = () => {
+    const newBoard = board.map((row) => row.map(() => generateRandomNumber()));
+    setBoard(newBoard);
+  };
+
+  const generateJacketUrl = (number: number): string => {
+    const formattedNumber = number.toString().padStart(3, '0');
+    return `https://storage.sekai.best/sekai-assets/music/jacket/jacket_s_${formattedNumber}_rip/jacket_s_${formattedNumber}.webp`;
+  };
+
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code} style={{ backgroundColor: '#fafafa' }}>
-            pages/index.js
-          </code>
-        </p>
-
-        <div className={styles.grid}>
-          <a className={styles.card} href="https://nextjs.org/docs">
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a className={styles.card} href="https://nextjs.org/learn">
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a className={styles.card} href="https://github.com/vercel/next.js/tree/master/examples">
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            className={styles.card}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <img src="vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+    <div>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {board.map((row, rowIndex) => (
+          <div key={rowIndex} style={{ display: 'flex' }}>
+            {row.map((number, columnIndex) => (
+              <img
+                key={columnIndex}
+                src={generateJacketUrl(number)}
+                alt={`Jacket ${number}`}
+                style={{ width: 100, height: 100 }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      <button onClick={generateRandomBoard}>再抽選</button>
     </div>
   );
 };
 
-export default Home;
+export default App;

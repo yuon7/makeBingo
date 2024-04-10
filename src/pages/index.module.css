@@ -11,16 +11,29 @@
 .board {
   display: flex;
   flex-wrap: wrap;
-  width: 640px;
-  height: 640px;
-  background-color: green;
+  width: 600px;
+  height: 600px;
+  background-color: rgb(157 255 247);
 }
 
 .cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border: solid 1px rgb(85 85 85);
+  display: 'flex';
+  width: 200px;
+  height: 200px;
+  border: solid 1px black;
+  border-radius: 3px;
+}
+
+.buttonNeon {
+  display: inline-block;
+  padding: 10px 40px;
+  margin: 4px 2px;
+  font-size: 16px;
+  color: #03e9f4;
+  text-align: center;
+  cursor: pointer;
+  background-color: black;
+  border: 3px solid #03e9f4;
+  border-radius: 5px;
+  transition: all 0.3s ease;
 }

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import styles from './index.module.css';
 
 const App = () => {
-  useEffect
+  useEffect;
   const [board, setBoard] = useState([
     [0, 0, 0],
     [0, 0, 0],
@@ -21,22 +22,26 @@ const App = () => {
   };
 
   return (
-    <div>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {board.map((row, rowIndex) => (
-          <div key={rowIndex} style={{ display: 'flex' }}>
-            {row.map((number, columnIndex) => (
-              <img
-                key={columnIndex}
-                src={generateJacketUrl(number)}
-                alt={`Jacket ${number}`}
-                style={{ width: 100, height: 100 }}
-              />
-            ))}
-          </div>
-        ))}
+    <div className={styles.container}>
+      <div className={styles.board}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {board.map((row, rowIndex) => (
+            <div key={rowIndex} style={{ display: 'flex' }}>
+              {row.map((number, columnIndex) => (
+                <img
+                  key={columnIndex}
+                  src={generateJacketUrl(number)}
+                  alt={`${number}`}
+                  className={styles.cell}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
-      <button onClick={generateRandomBoard}>再抽選</button>
+      <button className={styles.buttonNeon} onClick={generateRandomBoard}>
+        MakeBingo!
+      </button>
     </div>
   );
 };

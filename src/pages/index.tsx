@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 
 const App = () => {
-  const [board, setBoard] = useState<number[][]>([
+  const [bingoBoard, setBingoBoard] = useState<number[][]>([
     [0, 0, 0],
     [0, 0, 0],
     [0, 0, 0],
@@ -22,10 +22,10 @@ const App = () => {
 
   const generateRandomNumber = (ids: number[]) => ids[Math.floor(Math.random() * ids.length)];
 
-  const generateRandomBoard = () => {
+  const generateBingoBoard = () => {
     if (musicIds.length > 0) {
-      const newBoard = board.map((row) => row.map(() => generateRandomNumber(musicIds)));
-      setBoard(newBoard);
+      const newBoard = bingoBoard.map((row) => row.map(() => generateRandomNumber(musicIds)));
+      setBingoBoard(newBoard);
     }
   };
 
@@ -37,7 +37,7 @@ const App = () => {
   return (
     <div className={styles.container}>
       <div className={styles.board}>
-        {board.map((row, rowIndex) => (
+        {bingoBoard.map((row, rowIndex) => (
           <div key={rowIndex} style={{ display: 'flex' }}>
             {row.map((number, columnIndex) => (
               <img
@@ -50,7 +50,7 @@ const App = () => {
           </div>
         ))}
       </div>
-      <button className={styles.buttonNeon} onClick={generateRandomBoard}>
+      <button className={styles.buttonNeon} onClick={generateBingoBoard}>
         MakeBingo!
       </button>
     </div>

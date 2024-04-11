@@ -6,21 +6,22 @@
   height: 100vh;
   min-height: 100vh;
   padding: 0 0.5rem;
+  margin: 2%;
 }
 
 .board {
   display: flex;
   flex-wrap: wrap;
-  width: 600px;
-  height: 600px;
+  width: 540px;
+  height: 540px;
   background-color: rgb(157 255 247);
 }
 
 .cell {
   display: 'flex';
-  width: 200px;
-  height: 200px;
-  border: solid 1px black;
+  width: 180px;
+  height: 180px;
+  border: solid 1px rgb(255 255 255);
   border-radius: 3px;
 }
 
@@ -29,11 +30,11 @@
   padding: 10px 40px;
   margin: 4px 2px;
   font-size: 16px;
-  color: #03e9f4;
+  color: #fff;
   text-align: center;
   cursor: pointer;
   background-color: black;
-  border: 3px solid #03e9f4;
+  border: 3px solid #c6c6c6;
   border-radius: 5px;
   transition: all 0.3s ease;
 }

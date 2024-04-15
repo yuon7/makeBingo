@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type { Music, MusicTag, MusicWithTags } from '../types/type';
 import styles from './index.module.css';
 
 const App = () => {
@@ -7,35 +8,72 @@ const App = () => {
     [0, 0, 0],
     [0, 0, 0],
   ]);
+  const [musics, setMusics] = useState<MusicWithTags[]>([]);
+  const [selectedUnit, setSelectedUnit] = useState<string>('all');
 
-  const [musicIds, setMusicIds] = useState<number[]>([]);
+  const units = [
+    'all',
+    'vocaloid',
+    'light_music_club',
+    'idol',
+    'street',
+    'theme_park',
+    'school_refusal',
+  ];
 
   useEffect(() => {
-    fetch('https://sekai-world.github.io/sekai-master-db-diff/musics.json')
-      .then((response) => response.json())
-      .then((data) => {
-        const ids = data.map((item: { id: number }) => item.id);
-        setMusicIds(ids);
-      })
-      .catch((error) => console.error('Error fetching music IDs:', error));
+    const fetchMusicData = async () => {
+      const responseMusics = await fetch(
+        'https://sekai-world.github.io/sekai-master-db-diff/musics.json'
+      );
+      const musicsData: Music[] = await responseMusics.json();
+      const responseTags = await fetch(
+        'https://sekai-world.github.io/sekai-master-db-diff/musicTags.json'
+      );
+      const tagsData: MusicTag[] = await responseTags.json();
+
+      // 各楽曲に関連するすべてのユニット名を結合する
+      const musicsWithTags = musicsData.map((music) => ({
+        ...music,
+        unitNames: tagsData.filter((tag) => tag.musicId === music.id).map((tag) => tag.musicTag),
+      }));
+
+      setMusics(musicsWithTags);
+    };
+
+    fetchMusicData();
   }, []);
 
-  const generateRandomNumber = (ids: number[]) => ids[Math.floor(Math.random() * ids.length)];
+  const generateFilteredMusicIds = () => {
+    return musics
+      .filter((music) => selectedUnit === 'all' || music.unitNames.includes(selectedUnit))
+      .map((music) => music.id);
+  };
 
   const generateBingoBoard = () => {
-    if (musicIds.length > 0) {
-      const newBoard = bingoBoard.map((row) => row.map(() => generateRandomNumber(musicIds)));
+    const filteredIds = generateFilteredMusicIds();
+    if (filteredIds.length > 0) {
+      const newBoard = bingoBoard.map((row) =>
+        row.map(() => filteredIds[Math.floor(Math.random() * filteredIds.length)])
+      );
       setBingoBoard(newBoard);
     }
   };
 
-  const generateJacketUrl = (number: number): string => {
-    const formattedNumber = number.toString().padStart(3, '0');
-    return `https://storage.sekai.best/sekai-assets/music/jacket/jacket_s_${formattedNumber}_rip/jacket_s_${formattedNumber}.webp`;
+  const generateJacketUrl = (id: number): string => {
+    const formattedId = id.toString().padStart(3, '0');
+    return `https://storage.sekai.best/sekai-assets/music/jacket/jacket_s_${formattedId}_rip/jacket_s_${formattedId}.webp`;
   };
 
   return (
     <div className={styles.container}>
+      <select value={selectedUnit} onChange={(e) => setSelectedUnit(e.target.value)}>
+        {units.map((unit) => (
+          <option key={unit} value={unit}>
+            {unit.replace(/_/g, ' ')}
+          </option>
+        ))}
+      </select>
       <div className={styles.board}>
         {bingoBoard.map((row, rowIndex) => (
           <div key={rowIndex} style={{ display: 'flex' }}>

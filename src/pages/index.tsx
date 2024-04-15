@@ -21,6 +21,16 @@ const App = () => {
     'school_refusal',
   ];
 
+  const unitDisplayNames: Record<string, string> = {
+    all: 'All',
+    vocaloid: 'VITUAL SINGER',
+    light_music_club: 'Leo/need',
+    idol: 'MORE MORE JUMP!',
+    street: 'Vivid BAD SQUAD',
+    theme_park: 'ワンダーランズ×ショウタイム',
+    school_refusal: '25時、ナイトコードで。',
+  };
+
   useEffect(() => {
     const fetchMusicData = async () => {
       const responseMusics = await fetch(
@@ -74,7 +84,7 @@ const App = () => {
       >
         {units.map((unit) => (
           <option key={unit} value={unit}>
-            {unit.replace(/_/g, ' ')}
+            {unitDisplayNames[unit]}
           </option>
         ))}
       </select>

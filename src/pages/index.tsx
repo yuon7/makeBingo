@@ -67,7 +67,11 @@ const App = () => {
 
   return (
     <div className={styles.container}>
-      <select value={selectedUnit} onChange={(e) => setSelectedUnit(e.target.value)}>
+      <select
+        className={styles.dropDownMenu}
+        value={selectedUnit}
+        onChange={(e) => setSelectedUnit(e.target.value)}
+      >
         {units.map((unit) => (
           <option key={unit} value={unit}>
             {unit.replace(/_/g, ' ')}

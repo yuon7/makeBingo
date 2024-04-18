@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import type { Music, MusicTag, MusicWithTags } from '../types/type';
+import type { ActionMeta, SingleValue } from 'react-select';
+import Select from 'react-select';
+import { customSelectStyles } from '../components/SelectStyles';
+import type { Music, MusicTag, MusicWithTags, OptionType } from '../types/type';
 import styles from './index.module.css';
 
 const App = () => {
@@ -31,6 +34,11 @@ const App = () => {
     school_refusal: '25時、ナイトコードで。',
   };
 
+  const unitOptions = units.map((unit) => ({
+    value: unit,
+    label: unitDisplayNames[unit],
+  }));
+
   useEffect(() => {
     const fetchMusicData = async () => {
       const responseMusics = await fetch(
@@ -42,7 +50,6 @@ const App = () => {
       );
       const tagsData: MusicTag[] = await responseTags.json();
 
-      // 各楽曲に関連するすべてのユニット名を結合する
       const musicsWithTags = musicsData.map((music) => ({
         ...music,
         unitNames: tagsData.filter((tag) => tag.musicId === music.id).map((tag) => tag.musicTag),
@@ -75,19 +82,26 @@ const App = () => {
     return `https://storage.sekai.best/sekai-assets/music/jacket/jacket_s_${formattedId}_rip/jacket_s_${formattedId}.webp`;
   };
 
+  const handleSelectChange = (
+    selectedOption: SingleValue<OptionType>,
+    actionMeta: ActionMeta<OptionType>
+  ) => {
+    // actionMetaを使用して異なるアクションタイプを区別できるが、今回は不要
+    if (selectedOption) {
+      // nullの可能性を排除
+      setSelectedUnit(selectedOption.value);
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <select
-        className={styles.dropDownMenu}
-        value={selectedUnit}
-        onChange={(e) => setSelectedUnit(e.target.value)}
-      >
-        {units.map((unit) => (
-          <option key={unit} value={unit}>
-            {unitDisplayNames[unit]}
-          </option>
-        ))}
-      </select>
+      <Select
+        styles={customSelectStyles}
+        options={unitOptions}
+        value={unitOptions.find((option) => option.value === selectedUnit)}
+        onChange={handleSelectChange} // ハンドラー関数を指定
+      />
+
       <div className={styles.board}>
         {bingoBoard.map((row, rowIndex) => (
           <div key={rowIndex} style={{ display: 'flex' }}>

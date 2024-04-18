@@ -41,22 +41,8 @@
   transition: all 0.3s ease;
 }
 
-.dropDownMenu {
-  padding: 10px 20px; /* 内側の余白 */
-  font-size: 16px; /* 文字サイズ */
-  color: #333; /* 文字色 */
-  cursor: pointer; /* カーソルスタイル */
-  background-color: #f2f2f2; /* 背景色 */
-  border: 2px solid #ddd; /* 境界線 */
-  border-radius: 5px; /* 境界線の角丸 */ /* ブラウザデフォルトのスタイルを無効化 */
-  appearance: none;
+.row {
+  display: flex;
 }
 
-.dropDownMenu:hover {
-  background-color: #e1e1e1; /* ホバー時の背景色 */
-}
 
-.dropDownMenu:focus {
-  border-color: #0056b3; /* フォーカス時の境界線色 */
-  outline: none; /* アウトラインを非表示 */
-}

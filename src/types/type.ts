@@ -28,5 +28,10 @@ export interface MusicTag {
   seq: number;
 }
 export interface MusicWithTags extends Music {
-  unitNames: string[]; // 複数のユニット名を配列で持つ
+  unitNames: string[];
 }
+
+export type OptionType = {
+  value: string;
+  label: string;
+};

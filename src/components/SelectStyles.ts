@@ -1,15 +1,13 @@
-// SelectStyles.ts
 import type { StylesConfig } from 'react-select';
 import type { OptionType } from '../types/type';
 
-// Selectのためのカスタムスタイル
 export const customSelectStyles: StylesConfig<OptionType> = {
   control: (styles) => ({
     ...styles,
     backgroundColor: 'white',
     borderColor: '#ccc',
     boxShadow: 'none',
-    ':hover': { borderColor: 'lightgray' }, 
+    ':hover': { borderColor: 'lightgray' },
     borderRadius: 20,
     padding: 4,
   }),

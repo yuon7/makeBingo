@@ -87,6 +87,7 @@ const App = () => {
       setSelectedUnit(newValue.value);
     }
   };
+
   return (
     <div className={styles.container}>
       <Select

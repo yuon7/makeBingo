@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { ActionMeta, SingleValue } from 'react-select';
+import type { SingleValue } from 'react-select';
 import Select from 'react-select';
 import { customSelectStyles } from '../components/SelectStyles';
 import type { Music, MusicTag, MusicWithTags, OptionType } from '../types/type';
@@ -82,26 +82,20 @@ const App = () => {
     return `https://storage.sekai.best/sekai-assets/music/jacket/jacket_s_${formattedId}_rip/jacket_s_${formattedId}.webp`;
   };
 
-  const handleSelectChange = (
-    selectedOption: SingleValue<OptionType>,
-    actionMeta: ActionMeta<OptionType>
-  ) => {
-    // actionMetaを使用して異なるアクションタイプを区別できるが、今回は不要
-    if (selectedOption) {
-      // nullの可能性を排除
-      setSelectedUnit(selectedOption.value);
+  const handleSelectChange = (newValue: SingleValue<OptionType>) => {
+    if (newValue !== null) {
+      setSelectedUnit(newValue.value);
     }
   };
-
   return (
     <div className={styles.container}>
       <Select
         styles={customSelectStyles}
         options={unitOptions}
-        value={unitOptions.find((option) => option.value === selectedUnit)}
-        onChange={handleSelectChange} // ハンドラー関数を指定
+        value={unitOptions.find((option) => option.value === selectedUnit) || null}
+        onChange={handleSelectChange}
+        isMulti={false}
       />
-
       <div className={styles.board}>
         {bingoBoard.map((row, rowIndex) => (
           <div key={rowIndex} style={{ display: 'flex' }}>

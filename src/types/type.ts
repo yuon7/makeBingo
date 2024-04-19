@@ -30,8 +30,7 @@ export interface MusicTag {
 export interface MusicWithTags extends Music {
   unitNames: string[];
 }
-
-export type OptionType = {
+export interface OptionType {
   value: string;
   label: string;
-};
+}

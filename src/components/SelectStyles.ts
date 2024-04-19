@@ -21,6 +21,8 @@ export const customSelectStyles: StylesConfig<OptionType> = {
     ...styles,
     borderRadius: 10,
     boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+    width: '300%',
+    menuHeight: '200%',
   }),
   menuList: (styles) => ({
     ...styles,
@@ -29,6 +31,7 @@ export const customSelectStyles: StylesConfig<OptionType> = {
   singleValue: (styles) => ({
     ...styles,
     color: 'black',
+    maxHeight: '180px',
   }),
   placeholder: (styles) => ({
     ...styles,

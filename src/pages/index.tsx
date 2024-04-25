@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import html2canvas from 'html2canvas';
+import { useEffect, useRef, useState } from 'react';
 import type { SingleValue } from 'react-select';
 import Select from 'react-select';
 import { customSelectStyles } from '../components/SelectStyles';
@@ -38,6 +39,8 @@ const App = () => {
     value: unit,
     label: unitDisplayNames[unit],
   }));
+
+  const bingoBoardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchMusicData = async () => {
@@ -88,6 +91,19 @@ const App = () => {
     }
   };
 
+  const makeImageOfBingo = () => {
+    setTimeout(() => {
+      if (bingoBoardRef.current) {
+        html2canvas(bingoBoardRef.current, { useCORS: true }).then((canvas) => {
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = 'bingo.png';
+          link.click();
+        });
+      }
+    }, 500);
+  };
+
   return (
     <div className={styles.container}>
       <Select
@@ -97,9 +113,9 @@ const App = () => {
         onChange={handleSelectChange}
         isMulti={false}
       />
-      <div className={styles.board}>
+      <div className={styles.board} ref={bingoBoardRef}>
         {bingoBoard.map((row, rowIndex) => (
-          <div key={rowIndex} style={{ display: 'flex' }}>
+          <div key={rowIndex} className={styles.row}>
             {row.map((number, columnIndex) => (
               <img
                 key={columnIndex}
@@ -111,9 +127,14 @@ const App = () => {
           </div>
         ))}
       </div>
-      <button className={styles.buttonNeon} onClick={generateBingoBoard}>
-        MakeBingo!
-      </button>
+      <div className={styles.buttonContainer}>
+        <button className={styles.buttonNeon} onClick={generateBingoBoard}>
+          Make Bingo!
+        </button>
+        <button className={styles.buttonNeon} onClick={makeImageOfBingo}>
+          画像を出力
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import CachedIcon from '@mui/icons-material/Cached';
 import html2canvas from 'html2canvas';
 import { useEffect, useRef, useState } from 'react';
 import type { SingleValue } from 'react-select';
@@ -129,7 +130,7 @@ const App = () => {
       </div>
       <div className={styles.buttonContainer}>
         <button className={styles.buttonNeon} onClick={generateBingoBoard}>
-          Make Bingo!
+          <CachedIcon fontSize="large" />
         </button>
         <button className={styles.buttonNeon} onClick={makeImageOfBingo}>
           画像を出力

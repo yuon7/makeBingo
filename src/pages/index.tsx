@@ -9,9 +9,9 @@ import styles from './index.module.css';
 
 const App = () => {
   const [bingoBoard, setBingoBoard] = useState<number[][]>([
-    [0, 0, 0],
-    [0, 0, 0],
-    [0, 0, 0],
+    [-1, -1, -1],
+    [-1, -1, -1],
+    [-1, -1, -1],
   ]);
   const [musics, setMusics] = useState<MusicWithTags[]>([]);
   const [selectedUnit, setSelectedUnit] = useState<string>('all');
@@ -82,6 +82,9 @@ const App = () => {
   };
 
   const generateJacketUrl = (id: number): string => {
+    if (id === -1) {
+      return 'https://storage.sekai.best/sekai-assets/stamp/stamp0032_rip/stamp0032/stamp0032.png';
+    }
     const formattedId = id.toString().padStart(3, '0');
     return `https://storage.sekai.best/sekai-assets/music/jacket/jacket_s_${formattedId}_rip/jacket_s_${formattedId}.webp`;
   };

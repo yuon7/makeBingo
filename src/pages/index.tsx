@@ -1,4 +1,6 @@
 import CachedIcon from '@mui/icons-material/Cached';
+import DownloadIcon from '@mui/icons-material/Download';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import html2canvas from 'html2canvas';
 import { useEffect, useRef, useState } from 'react';
 import type { SingleValue } from 'react-select';
@@ -112,10 +114,7 @@ const App = () => {
     setIsLoading(false);
   };
 
-  const generateJacketUrl = (id: number): string => {
-    if (id === -1) {
-      return 'https://storage.sekai.best/sekai-assets/stamp/stamp0032_rip/stamp0032/stamp0032.png';
-    }
+  const generateJacketUrl = (id: number) => {
     const formattedId = id.toString().padStart(3, '0');
     return `https://storage.sekai.best/sekai-assets/music/jacket/jacket_s_${formattedId}_rip/jacket_s_${formattedId}.webp`;
   };
@@ -184,14 +183,18 @@ const App = () => {
                   cellLoading[rowIndex][columnIndex] ? styles.loading : ''
                 }`}
               >
-                {!cellLoading[rowIndex][columnIndex] && (
-                  <img
-                    src={generateJacketUrl(number)}
-                    alt={`${number}`}
-                    onError={() =>
-                      handleImageError(rowIndex, columnIndex, generateFilteredMusicIds())
-                    }
-                  />
+                {number === -1 ? (
+                  <MusicNoteIcon fontSize="large" />
+                ) : (
+                  !cellLoading[rowIndex][columnIndex] && (
+                    <img
+                      src={generateJacketUrl(number)}
+                      alt={`${number}`}
+                      onError={() =>
+                        handleImageError(rowIndex, columnIndex, generateFilteredMusicIds())
+                      }
+                    />
+                  )
                 )}
               </div>
             ))}
@@ -203,7 +206,7 @@ const App = () => {
           <CachedIcon fontSize="large" />
         </button>
         <button className={styles.buttonNeon} onClick={makeImageOfBingo} disabled={isLoading}>
-          ダウンロード！
+          <DownloadIcon fontSize="large" />
         </button>
       </div>
     </div>

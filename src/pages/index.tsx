@@ -175,7 +175,7 @@ const App = () => {
       />
       <div className={styles.board} ref={bingoBoardRef}>
         {bingoBoard.map((row, rowIndex) => (
-          <div key={rowIndex} className={styles.row}>
+          <div key={rowIndex}>
             {row.map((number, columnIndex) => (
               <div
                 key={columnIndex}

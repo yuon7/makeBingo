@@ -11,12 +11,12 @@
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px; 
+  gap: 20px;
   width: 100%;
   max-width: 720px;
   padding: 10px;
   background-color: rgb(134 134 134);
-  border: solid 1.5px rgb(0, 0, 0);
+  border: solid 1.5px rgb(0 0 0);
 }
 
 .cell {
@@ -73,7 +73,7 @@
 
 @media (max-width: 600px) {
   .board {
-    gap: 10px; 
+    gap: 10px;
   }
 
   .cell {

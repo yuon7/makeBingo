@@ -16,6 +16,11 @@ const App = () => {
   const [musics, setMusics] = useState<MusicWithTags[]>([]);
   const [selectedUnit, setSelectedUnit] = useState<string>('all');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [cellLoading, setCellLoading] = useState<boolean[][]>([
+    [false, false, false],
+    [false, false, false],
+    [false, false, false],
+  ]);
 
   const units = [
     'all',
@@ -72,16 +77,38 @@ const App = () => {
       .map((music) => music.id);
   };
 
+  const initializeCellLoading = () => {
+    setCellLoading([
+      [true, true, true],
+      [true, true, true],
+      [true, true, true],
+    ]);
+  };
+
   const generateBingoBoard = async () => {
     setIsLoading(true);
+    initializeCellLoading();
     const filteredIds = generateFilteredMusicIds();
     if (filteredIds.length > 0) {
       const newBoard = bingoBoard.map((row) =>
         row.map(() => filteredIds[Math.floor(Math.random() * filteredIds.length)])
       );
       setBingoBoard(newBoard);
+
+      // 各セルの回転を順番に停止するやつね！
+      newBoard.forEach((row, rowIndex) => {
+        row.forEach((_, columnIndex) => {
+          setTimeout(() => {
+            setCellLoading((prev) => {
+              const newLoadingState = [...prev];
+              newLoadingState[rowIndex] = [...newLoadingState[rowIndex]];
+              newLoadingState[rowIndex][columnIndex] = false;
+              return newLoadingState;
+            });
+          }, (rowIndex * newBoard.length + columnIndex) * 500); // 0.5秒間隔で次のセルに移動
+        });
+      });
     }
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // 2秒待機
     setIsLoading(false);
   };
 
@@ -127,9 +154,13 @@ const App = () => {
             {row.map((number, columnIndex) => (
               <div
                 key={columnIndex}
-                className={`${styles.cell} ${isLoading ? styles.loading : ''}`}
+                className={`${styles.cell} ${
+                  cellLoading[rowIndex][columnIndex] ? styles.loading : ''
+                }`}
               >
-                {!isLoading && <img src={generateJacketUrl(number)} alt={`${number}`} />}
+                {!cellLoading[rowIndex][columnIndex] && (
+                  <img src={generateJacketUrl(number)} alt={`${number}`} />
+                )}
               </div>
             ))}
           </div>

@@ -95,7 +95,7 @@ const App = () => {
       );
       setBingoBoard(newBoard);
 
-      // 各セルの回転を順番に停止するやつね！
+      // 各セルの回転を順番に停止する
       newBoard.forEach((row, rowIndex) => {
         row.forEach((_, columnIndex) => {
           setTimeout(() => {
@@ -118,6 +118,32 @@ const App = () => {
     }
     const formattedId = id.toString().padStart(3, '0');
     return `https://storage.sekai.best/sekai-assets/music/jacket/jacket_s_${formattedId}_rip/jacket_s_${formattedId}.webp`;
+  };
+
+  const handleImageError = (rowIndex: number, columnIndex: number, filteredIds: number[]) => {
+    setCellLoading((prev) => {
+      const newLoadingState = [...prev];
+      newLoadingState[rowIndex] = [...newLoadingState[rowIndex]];
+      newLoadingState[rowIndex][columnIndex] = true; // 再試行のためにロード中に設定
+      return newLoadingState;
+    });
+
+    const newId = filteredIds[Math.floor(Math.random() * filteredIds.length)];
+    setBingoBoard((prev) => {
+      const newBoard = [...prev];
+      newBoard[rowIndex] = [...newBoard[rowIndex]];
+      newBoard[rowIndex][columnIndex] = newId;
+      return newBoard;
+    });
+
+    setTimeout(() => {
+      setCellLoading((prev) => {
+        const newLoadingState = [...prev];
+        newLoadingState[rowIndex] = [...newLoadingState[rowIndex]];
+        newLoadingState[rowIndex][columnIndex] = false; // 再度ロードを停止
+        return newLoadingState;
+      });
+    }, 500);
   };
 
   const handleSelectChange = (newValue: SingleValue<OptionType>) => {
@@ -159,7 +185,13 @@ const App = () => {
                 }`}
               >
                 {!cellLoading[rowIndex][columnIndex] && (
-                  <img src={generateJacketUrl(number)} alt={`${number}`} />
+                  <img
+                    src={generateJacketUrl(number)}
+                    alt={`${number}`}
+                    onError={() =>
+                      handleImageError(rowIndex, columnIndex, generateFilteredMusicIds())
+                    }
+                  />
                 )}
               </div>
             ))}

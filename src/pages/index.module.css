@@ -19,12 +19,26 @@
 }
 
 .cell {
-  display: 'flex';
+  display: flex;
   width: 200px;
   height: 200px;
   margin: 20px;
   border: solid 1.5px rgb(255 234 234);
   border-radius: 3%;
+}
+
+.cell.loading {
+  animation: spin-3d 0.5s linear infinite; /* 垂直に高速で回転 */
+}
+
+@keyframes spin-3d {
+  0% {
+    transform: rotateX(0deg);
+  }
+
+  100% {
+    transform: rotateX(360deg);
+  }
 }
 
 .buttonContainer {

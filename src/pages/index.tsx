@@ -15,6 +15,7 @@ const App = () => {
   ]);
   const [musics, setMusics] = useState<MusicWithTags[]>([]);
   const [selectedUnit, setSelectedUnit] = useState<string>('all');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const units = [
     'all',
@@ -28,7 +29,7 @@ const App = () => {
 
   const unitDisplayNames: Record<string, string> = {
     all: 'All',
-    vocaloid: 'VITUAL SINGER',
+    vocaloid: 'VIRTUAL SINGER',
     light_music_club: 'Leo/need',
     idol: 'MORE MORE JUMP!',
     street: 'Vivid BAD SQUAD',
@@ -71,7 +72,8 @@ const App = () => {
       .map((music) => music.id);
   };
 
-  const generateBingoBoard = () => {
+  const generateBingoBoard = async () => {
+    setIsLoading(true);
     const filteredIds = generateFilteredMusicIds();
     if (filteredIds.length > 0) {
       const newBoard = bingoBoard.map((row) =>
@@ -79,6 +81,8 @@ const App = () => {
       );
       setBingoBoard(newBoard);
     }
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // 2秒待機
+    setIsLoading(false);
   };
 
   const generateJacketUrl = (id: number): string => {
@@ -121,22 +125,22 @@ const App = () => {
         {bingoBoard.map((row, rowIndex) => (
           <div key={rowIndex} className={styles.row}>
             {row.map((number, columnIndex) => (
-              <img
+              <div
                 key={columnIndex}
-                src={generateJacketUrl(number)}
-                alt={`${number}`}
-                className={styles.cell}
-              />
+                className={`${styles.cell} ${isLoading ? styles.loading : ''}`}
+              >
+                {!isLoading && <img src={generateJacketUrl(number)} alt={`${number}`} />}
+              </div>
             ))}
           </div>
         ))}
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.buttonNeon} onClick={generateBingoBoard}>
+        <button className={styles.buttonNeon} onClick={generateBingoBoard} disabled={isLoading}>
           <CachedIcon fontSize="large" />
         </button>
-        <button className={styles.buttonNeon} onClick={makeImageOfBingo}>
-          画像を出力
+        <button className={styles.buttonNeon} onClick={makeImageOfBingo} disabled={isLoading}>
+          ダウンロード！
         </button>
       </div>
     </div>

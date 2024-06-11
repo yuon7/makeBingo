@@ -53,21 +53,25 @@ const App = () => {
 
   useEffect(() => {
     const fetchMusicData = async () => {
-      const responseMusics = await fetch(
-        'https://sekai-world.github.io/sekai-master-db-diff/musics.json'
-      );
-      const musicsData: Music[] = await responseMusics.json();
-      const responseTags = await fetch(
-        'https://sekai-world.github.io/sekai-master-db-diff/musicTags.json'
-      );
-      const tagsData: MusicTag[] = await responseTags.json();
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      const targetUrlMusics = 'https://sekai-world.github.io/sekai-master-db-diff/musics.json';
+      const targetUrlTags = 'https://sekai-world.github.io/sekai-master-db-diff/musicTags.json';
 
-      const musicsWithTags = musicsData.map((music) => ({
-        ...music,
-        unitNames: tagsData.filter((tag) => tag.musicId === music.id).map((tag) => tag.musicTag),
-      }));
+      try {
+        const responseMusics = await fetch(proxyUrl + targetUrlMusics);
+        const musicsData: Music[] = await responseMusics.json();
+        const responseTags = await fetch(proxyUrl + targetUrlTags);
+        const tagsData: MusicTag[] = await responseTags.json();
 
-      setMusics(musicsWithTags);
+        const musicsWithTags = musicsData.map((music) => ({
+          ...music,
+          unitNames: tagsData.filter((tag) => tag.musicId === music.id).map((tag) => tag.musicTag),
+        }));
+
+        setMusics(musicsWithTags);
+      } catch (error) {
+        console.error('Error fetching music data:', error);
+      }
     };
 
     fetchMusicData();

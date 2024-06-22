@@ -8,6 +8,7 @@ import Select from 'react-select';
 import { customSelectStyles } from '../components/SelectStyles';
 import type { Music, MusicTag, MusicWithTags, OptionType } from '../types/type';
 import styles from './index.module.css';
+import loadingSound from './materials/op_metal_tool_box.mp3'; // Adjust the path as needed
 
 const App = () => {
   const [bingoBoard, setBingoBoard] = useState<number[][]>([
@@ -50,6 +51,7 @@ const App = () => {
   }));
 
   const bingoBoardRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(new Audio(loadingSound));
 
   useEffect(() => {
     const fetchMusicData = async () => {
@@ -94,6 +96,7 @@ const App = () => {
   const generateBingoBoard = async () => {
     setIsLoading(true);
     initializeCellLoading();
+    audioRef.current.play();
     const filteredIds = generateFilteredMusicIds();
     if (filteredIds.length > 0) {
       const newBoard = bingoBoard.map((row) =>
@@ -115,6 +118,8 @@ const App = () => {
         });
       });
     }
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
     setIsLoading(false);
   };
 
@@ -213,6 +218,7 @@ const App = () => {
           <DownloadIcon fontSize="large" />
         </button>
       </div>
+      <audio ref={audioRef} src={loadingSound} />
     </div>
   );
 };
